@@ -1,37 +1,52 @@
-data = buildData();
-
-function buildData() {
-  return [
-    {value: 100},
-    {value: 200},
-    {value: 300},
-  ].map(function(d, index) {
-    d.index = index,
-    d.storkeWidth = 0.1
-    return d;
-  });
-}
-
+data = [];
 dataChanged = new Tracker.Dependency();
+width = 800;
+var maxWidth = width;
+var baseColors = [
+  [207, 169, 239],
+  [227, 190, 234],
+  [185, 223, 239],
+  [206, 214, 232]
+]
 
 Template.graph.data = function() {
   dataChanged.depend();
+  maxWidth = data.totalHitCount;
+  data._x = 0;
   return data;
 };
 
-lastSelectedItem = null;
-Template.graph.events({
-  "mouseover rect": function(el) {
-    if(lastSelectedItem) {
-      lastSelectedItem.storkeWidth = "0.1";
-    }
-    
-    this.storkeWidth = "1";
-    lastSelectedItem = this;
+Template.graphBar.hasChildren = function() {
+  return this.children && this.children.length > 0;
+};
 
-    dataChanged.changed();
+Template.graphBar.getWidth = function(w) {
+  return Math.floor((width/maxWidth) * w);
+};
+
+Template.graphBar.getColor = function() {
+  var pickIndex = Math.floor(Math.random() * baseColors.length)
+  var baseColor = EJSON.clone(baseColors[pickIndex]);
+
+  return "rgb(" + baseColor.join(",") + ")";
+};
+
+Template.graphBar.getChildren = function() {
+  if(Blaze.currentView && Blaze.currentView.parentView) {
+    var parent = Blaze.getData(Blaze.currentView.parentView);
   }
-});
+
+  var offset = (parent)? parent._x : 0;
+  var totalX = 0;
+  var children = this.children.map(function(child) {
+    child = _.clone(child);
+    child._x = offset + Template.graphBar.getWidth(totalX);
+    totalX += child.totalHitCount;
+    return child;
+  });
+
+  return children;
+};
 
 Blaze.registerHelper('expr', function(a) {
   var self = this;
@@ -44,8 +59,4 @@ Blaze.registerHelper('expr', function(a) {
   });
 
   return eval(parts.join(" "));
-});
-
-Blaze.registerHelper('add', function(a, b) {
-  return a + b;
 });

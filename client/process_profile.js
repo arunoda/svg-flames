@@ -19,8 +19,9 @@ CPUProfile.prototype.process = function() {
   });
 };
 
-CPUProfile.prototype._buildFunctions = function(node, pathId) {
+CPUProfile.prototype._buildFunctions = function(node, pathId, depth) {
   var self = this;
+  depth = depth || 0;
 
   var rootFunc = self._getFunction(node);
   rootFunc.totalHitCount += node.hitCount;
@@ -28,10 +29,11 @@ CPUProfile.prototype._buildFunctions = function(node, pathId) {
   rootFunc.totalHitCountByPath[pathId]+= node.hitCount;
 
   node.totalHitCount = node.hitCount;
+  node._depth = depth;
 
   if(node.children) {
-    node.children.forEach(function(child) {
-      node.totalHitCount += self._buildFunctions(child, pathId);
+    node.children.forEach(function(child, index) {
+      node.totalHitCount += self._buildFunctions(child, pathId, depth + 1);
     });
   }
 
@@ -49,9 +51,3 @@ CPUProfile.prototype._getFunction = function(functionNode) {
   }
   return func;
 };
-
-Meteor.startup(function() {
-  var profile = new CPUProfile(SampleProfile);
-  profile.process();
-  console.log(profile);
-});
