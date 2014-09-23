@@ -1,0 +1,18 @@
+<head>
+  <title>test1</title>
+</head>
+
+<body>
+  {{> graph}}
+</body>
+
+<template name="graph">
+  <svg width="500" height="500">
+    {{#each data}}
+      <rect x="0" class="barr" y="{{expr 'index * 25'}}" width="{{value}}" height="20" 
+        fill="#fdd" stroke="#faa" stroke-width="{{storkeWidth}}"/>
+      <text x="{{expr 'value + 5'}}" y="{{expr '( index * 25 ) + 13'}}" 
+        font-family="monaco" font-size="12" fill="#888">{{value}}</text>
+    {{/each}}
+  </svg>
+</template>
