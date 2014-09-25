@@ -1,16 +1,19 @@
 data = [];
 dataChanged = new Tracker.Dependency();
-width = 800;
+width = 1000;
 var maxWidth = width;
 var baseColors = [
   [207, 169, 239],
   [227, 190, 234],
   [185, 223, 239],
   [206, 214, 232]
-]
+];
+
+function buildSvg() {
+
+}
 
 Template.graph.data = function() {
-  dataChanged.depend();
   maxWidth = data.totalHitCount;
   data._x = 0;
   return data;
@@ -46,6 +49,14 @@ Template.graphBar.getChildren = function() {
   });
 
   return children;
+};
+
+Template.graphBar.getFunctionName = function() {
+  var functionNameWidth = 12 * this.functionName.length;
+  var barWidth = Template.graphBar.getWidth(this.totalHitCount);
+  if(barWidth > functionNameWidth) {
+    return this.functionName;
+  }
 };
 
 Blaze.registerHelper('expr', function(a) {
