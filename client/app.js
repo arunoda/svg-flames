@@ -1,4 +1,3 @@
-data = [];
 dataChanged = new Tracker.Dependency();
 width = 1000;
 var maxWidth = width;
@@ -9,11 +8,29 @@ var baseColors = [
   [206, 214, 232]
 ];
 
-function buildSvg() {
+Meteor.startup(function() {
+  var svgHtml = "";
+  var baseData = getData();
+  renderNode(baseData, null);
 
-}
+  $('#graph-svg').html("<svg width='1000' height='1000'>" + svgHtml + "</svg>");
+  $('#graph-svg').on('click', 'rect, text', function(e) {
+    console.log($(e.target).data('id'));
+  });
 
-Template.graph.data = function() {
+  function renderNode(node) {
+    svgHtml += Blaze.toHTMLWithData(Template.graphBar, node);
+
+    if(node.children && node.children.length > 0) {
+      var children = getChildren(node);
+      children.forEach(function(child) {
+        renderNode(child, node);
+      });
+    }
+  }
+});
+
+function getData() {
   maxWidth = data.totalHitCount;
   data._x = 0;
   return data;
@@ -34,14 +51,10 @@ Template.graphBar.getColor = function() {
   return "rgb(" + baseColor.join(",") + ")";
 };
 
-Template.graphBar.getChildren = function() {
-  if(Blaze.currentView && Blaze.currentView.parentView) {
-    var parent = Blaze.getData(Blaze.currentView.parentView);
-  }
-
-  var offset = (parent)? parent._x : 0;
+function getChildren(node) {
+  var offset = node._x;
   var totalX = 0;
-  var children = this.children.map(function(child) {
+  var children = node.children.map(function(child) {
     child = _.clone(child);
     child._x = offset + Template.graphBar.getWidth(totalX);
     totalX += child.totalHitCount;

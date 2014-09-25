@@ -10,7 +10,6 @@ callback-hook@1.0.0
 check@1.0.0
 ctl-helper@1.0.3
 ctl@1.0.1
-d3@1.0.0
 ddp@1.0.8
 deps@1.0.3
 ejson@1.0.2

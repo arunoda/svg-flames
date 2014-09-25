@@ -5,16 +5,19 @@ data = profile.paths[4];
 // data = {
 //   totalHitCount: 100,
 //   _depth: 0,
+//   functionName: "one",
 //   children: [
 //     {totalHitCount: 60, _depth: 1, 
 //       children: [
-//         {totalHitCount: 30, _depth: 2}
-//       ]
+//         {totalHitCount: 30, _depth: 2, functionName: "four"}
+//       ],
+//       functionName: "two",
 //     },
 //     {totalHitCount: 40, _depth: 1, 
 //       children: [
-//         {totalHitCount: 10, _depth: 2}
-//       ]
+//         {totalHitCount: 10, _depth: 2, functionName: "five"}
+//       ],
+//       functionName: "three",
 //     },
 //   ]
 // };
