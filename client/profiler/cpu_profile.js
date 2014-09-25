@@ -21,7 +21,6 @@ CPUProfile.prototype.process = function() {
 
 CPUProfile.prototype._buildFunctions = function(node, pathId, depth) {
   var self = this;
-  depth = depth || 0;
 
   var rootFunc = self._getFunction(node);
   rootFunc.totalHitCount += node.hitCount;
@@ -29,7 +28,6 @@ CPUProfile.prototype._buildFunctions = function(node, pathId, depth) {
   rootFunc.totalHitCountByPath[pathId]+= node.hitCount;
 
   node.totalHitCount = node.hitCount;
-  node._depth = depth;
 
   if(node.children) {
     node.children.forEach(function(child, index) {

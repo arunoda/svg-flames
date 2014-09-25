@@ -23,15 +23,18 @@ FlameViewer.prototype.renderPath = function(pathId) {
   $(el).on('click', 'rect, text', this._onClick);
   $(el).on('mouseover', 'rect, text', this._onHover);
 
-  function renderNode(node) {
+  function renderNode(node, depth) {
+    depth = depth || 0;
     node = _.clone(node);
     node.viewer = self;
+    node._depth = depth;
+
     svgHtml += Blaze.toHTMLWithData(Template.flameBar, node);
 
     if(node.children && node.children.length > 0) {
       var children = self._getChildren(node);
       children.forEach(function(child) {
-        renderNode(child, node);
+        renderNode(child, depth + 1);
       });
     }
   }
