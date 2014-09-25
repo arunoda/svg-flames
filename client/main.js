@@ -1,36 +1,14 @@
-var profile = new CPUProfile(SampleProfile);
-profile.process();
+Meteor.startup(function() {
+  var profile = new CPUProfile(SampleProfile);
+  profile.process();
 
-data = profile.paths[4];
-// data = {
-//   totalHitCount: 100,
-//   _depth: 0,
-//   functionName: "one",
-//   children: [
-//     {totalHitCount: 60, _depth: 1, 
-//       children: [
-//         {totalHitCount: 30, _depth: 2, functionName: "four"}
-//       ],
-//       functionName: "two",
-//     },
-//     {totalHitCount: 40, _depth: 1, 
-//       children: [
-//         {totalHitCount: 10, _depth: 2, functionName: "five"}
-//       ],
-//       functionName: "three",
-//     },
-//   ]
-// };
-dataChanged.changed();
+  flameViewer = new FlameViewer(profile, 'flame-graph', 800, 800);
+  flameViewer.renderPath(4);
+  flameViewer.onHover = function(id, node) {
+    console.log(id, node.functionName, node.url);
+  };
 
-function buildData() {
-  return [
-    {value: 100},
-    {value: 200},
-    {value: 300},
-  ].map(function(d, index) {
-    d.index = index,
-    d.storkeWidth = 0.1
-    return d;
-  });
-}
+  // flameViewer.onClick = function(id, node) {
+  //   console.log(id, node.functionName);
+  // };
+});

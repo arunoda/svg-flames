@@ -1,32 +1,3 @@
-<head>
-  <title>test1</title>
-  <meta charset="utf-8">
-</head>
-
 <body>
-  <div>
-  {{> graph}}
-  </div>
+  <div id='flame-graph'></div>
 </body>
-
-<template name="graph">
-  <div id="graph-svg">
-    
-  </div>
-</template>
-
-<template name="graphBar">
-  <rect data-id="{{callUID}}" x="{{_x}}" y="{{expr '_depth * 20'}}" width="{{getWidth totalHitCount}}" height="20" 
-    fill="{{getColor}}" stroke="#fff" stroke-width="0.4"/>
-  <text data-id="{{callUID}}" x="{{expr '_x + 2'}}" y="{{expr '( _depth * 20 ) + 13'}}" 
-    font-family="monospace" font-size="12" fill="#555">{{getFunctionName}}</text>
-</template>
-
-<!-- <head>
-<script type="text/html" id="flame-bar">
-  <rect x="{{_x}}" y="{{expr '_depth * 20'}}" width="{{getWidth totalHitCount}}" height="20" 
-    fill="{{getColor}}" stroke="#fff" stroke-width="0.4"/>
-  <text x="{{expr '_x + 2'}}" y="{{expr '( _depth * 20 ) + 13'}}" 
-    font-family="monospace" font-size="12" fill="#555">{{getFunctionName}}</text>
-</script>
-</head> -->

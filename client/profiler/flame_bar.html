@@ -1,0 +1,6 @@
+<template name="flameBar">
+  <rect data-id="{{callUID}}" x="{{_x}}" y="{{expr '_depth * 20'}}" width="{{getWidth totalHitCount}}" height="20" 
+    fill="{{getColor}}" stroke="#fff" stroke-width="0.4"/>
+  <text data-id="{{callUID}}" x="{{expr '_x + 2'}}" y="{{expr '( _depth * 20 ) + 13'}}" 
+    font-family="monospace" font-size="12" fill="#555">{{getFunctionName}}</text>
+</template>

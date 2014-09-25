@@ -1,7 +1,7 @@
 CPUProfile = function(profile) {
   this.profile = profile;
   this.paths = profile.head.children;
-  this._functionsMap = {};
+  this.functionsMap = {};
   this.functions = [];
   this.totalHitCount = 0;
 };
@@ -42,9 +42,9 @@ CPUProfile.prototype._buildFunctions = function(node, pathId, depth) {
 
 CPUProfile.prototype._getFunction = function(functionNode) {
   var key = functionNode.callUID;
-  var func = this._functionsMap[key];
+  var func = this.functionsMap[key];
   if(!func) {
-    this._functionsMap[key] = func = _.omit(functionNode, 'children', 'hitCount');
+    this.functionsMap[key] = func = _.omit(functionNode, 'children', 'hitCount');
     func.totalHitCount = 0;
     func.totalHitCountByPath = {};
     this.functions.push(func);
